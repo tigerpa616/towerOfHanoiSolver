@@ -42,4 +42,19 @@ int hValue(std::string p1, std::string p2, std::string p3)
             }
         }
     }
+
+    if(p3 != "0")
+    {
+        if(p3[0] == 'T')
+        {
+            for(int i = 0; i < findings.size(); i++)
+            {
+                if(p2[i] == 'M' || p2[i] == 'B')
+                {
+                    h = h + 2;
+                }
+            }
+        }
+        
+    }
 }
