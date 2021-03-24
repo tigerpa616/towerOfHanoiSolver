@@ -19,6 +19,8 @@ int hValue(std::string p1, std::string p2, std::string p3)
 {
     std::vector<char> findings;
     int h = 0;
+    
+    //if peg 1 is not empty
     if(p1 != "0")
     {
         for(int i = 0; i < p1.length(); i++)
@@ -31,6 +33,7 @@ int hValue(std::string p1, std::string p2, std::string p3)
         }
     }
 
+    //if peg 2 is not empty
     if(p2 != "0")
     {
         for(int i = 0; i < p2.length(); i++)
@@ -43,6 +46,7 @@ int hValue(std::string p1, std::string p2, std::string p3)
         }
     }
 
+    //if peg 3 is not empty
     if(p3 != "0")
     {
         if(p3[0] == 'T')
@@ -57,4 +61,19 @@ int hValue(std::string p1, std::string p2, std::string p3)
         }
         
     }
+
+    //else if peg 3 contains the middle ring
+    else if(p3[0] == 'M')
+    {
+        for(int i = 0; i < findings.size(); i++)
+        {
+            //if peg 3 also contains the bottom ring
+            if(findings[i] == 'B')
+            {
+                h = h + 2;
+            }
+        }
+    }
+
+    return h;
 }
