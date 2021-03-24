@@ -147,10 +147,10 @@ void generate(State& current)
                     // T   M   B Cost
     addToFrontier.h = hValue("MB", "0", "T");
     addToFrontier.f = addToFrontier.g + addToFrontier.h;
-    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) { //if peg1 peg2 peg3 not equal to p1 p2 p3 then add them to the frontier
       frontier.push_back(addToFrontier);
     }
-    findNRemove("TMB", "0", "0");
+    findNRemove("TMB", "0", "0"); //remove the state from the log
     return;
   }
   else if(current.peg1 == "MB" && current.peg2 == "0" && current.peg3 == "T") {
