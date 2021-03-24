@@ -14,7 +14,7 @@ struct State {
 
 std::vector<State> border;
 
-//  h (x)= (the total number of disks of left and middle poles) + 2*（number of disks that in the right pole and smaller than any disk that in left or middle poles）
+//  h (x)= (the total number of disks on the left and middle pegs) + 2*（number of disks that are in the right peg and smaller than any disk that is in the left or middle peg）
 int hValue(std::string p1, std::string p2, std::string p3)
 {
     std::vector<char> findings;
