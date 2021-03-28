@@ -137,7 +137,7 @@ void generate(State& current)
                     // T   M   B Cost
     addToFrontier.h = hValue("MB", "T", "0");
     addToFrontier.f = addToFrontier.g + addToFrontier.h;
-    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) { // Checking if the node is already in the frontier.
       frontier.push_back(addToFrontier);
     }
     addToFrontier.peg1 = "MB";
