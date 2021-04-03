@@ -80,7 +80,7 @@ int hValue(std::string p1, std::string p2, std::string p3)
     return h;
 }
 
-// literally just prints the values from the State struct and checks if the goal has been reached
+// literally just prints the values from the State struct and checks if the goal state has been reached
 void displayState(State toDisplay)
 {
     std::cout << toDisplay.peg1 << " ";
@@ -98,4 +98,55 @@ void displayState(State toDisplay)
     }
 
     std::cout << "Goal: Not Achieved" << std::endl;
+}
+
+// literally just prints the values from the border and checks if the goal state has been reached
+void displayBorder()
+{
+    // checks to see if the Goal State is in the border
+    for(int k = 0; k < border.size(); k++)
+    {
+        if(border[k].goal)
+        {
+            std::cout << "Goal State in Border" << std::endl;
+        }
+
+        std::cout << border[k].peg1 << " ";
+        std::cout << border[k].peg2 << " ";
+        std::cout << border[k].peg3 << " ";
+
+        std::cout << "g = " << border[k].g;
+        std::cout << " h = " << border[k].h;
+        std::cout << " f = " << border[k].f << std::endl << std::endl;
+    }
+}
+
+// checks to see if the node in the border matches what it is suppose to be
+bool inBorder(std::string p1, std::string p2, std::string p3)
+{
+    for(int i = 0; i < border.size(); i++)
+    {
+        if(border[i].peg1 == p1 && border[i].peg2 == p2 && border[i].peg3 == p3)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+// function to erase whatever is in the border to prepare for the next value in the border
+void findAndRemove(std::string p1, std::string p2, std::string p3)
+{
+    for(int i = 0; i < border.size(); i++)
+    {
+        if(border[i].peg1 == p1 && border[i].peg2 == p2 && border[i].peg3 == p3)
+        {
+            border.erase(border.begin()+i);
+        }
+    }
+}
+
+State bestofBorder(State best)
+{
+    
 }
