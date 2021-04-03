@@ -79,6 +79,7 @@ int hValue(std::string p1, std::string p2, std::string p3)
     return h;
 }
 
+// literally just prints the values from the State struct and checks if the goal has been reached
 void displayState(State toDisplay)
 {
     std::cout << toDisplay.peg1 << " ";
