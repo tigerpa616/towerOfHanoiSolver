@@ -16,6 +16,7 @@ std::vector<State> border;
 
 //  h (x)= (the total number of disks on the left and middle pegs) + 2*（number of disks that are in the right peg and smaller than any disk that is in the left or middle peg）
 int hValue(std::string p1, std::string p2, std::string p3)
+
 {
     std::vector<char> findings;
     int h = 0;
@@ -76,4 +77,23 @@ int hValue(std::string p1, std::string p2, std::string p3)
     }
 
     return h;
+}
+
+void displayState(State toDisplay)
+{
+    std::cout << toDisplay.peg1 << " ";
+    std::cout << toDisplay.peg2 << " ";
+    std::cout << toDisplay.peg3 << " " << std::endl;
+
+    std::cout << "g: " << toDisplay.g << " ";
+    std::cout << "h: " << toDisplay.h << " ";
+    std::cout << "f: " << toDisplay.f << " ";
+
+    if(toDisplay.goal)
+    {
+        std::cout << "Goal: Achieved" << std::endl;
+        return;
+    }
+
+    std::cout << "Goal: Not Achieved" << std::endl;
 }
