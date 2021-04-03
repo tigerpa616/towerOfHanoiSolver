@@ -12,6 +12,7 @@ struct State {
   bool goal;
 };
 
+//this vector is need to be able to check what the next state will be
 std::vector<State> border;
 
 //  h (x)= (the total number of disks on the left and middle pegs) + 2*（number of disks that are in the right peg and smaller than any disk that is in the left or middle peg）
