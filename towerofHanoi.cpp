@@ -146,7 +146,54 @@ void findAndRemove(std::string p1, std::string p2, std::string p3)
     }
 }
 
+// function to find the best state in the border state
 State bestofBorder(State best)
 {
-    
+    //if the border is not empty; by default the current state should be the best
+    if(border.size())
+    {
+        best.peg1 = border[0].peg1;
+        best.peg2 = border[0].peg2;
+        best.peg3 = border[0].peg3;
+
+        best.f = border[0].f;
+        best.g = border[0].g;
+        best.h = border[0].h;
+    }
+
+    //find the best f state in the border, remove it, and return it
+    for(int i = 0; i < border.size(); i++)
+    {
+        if(border[i].goal)
+        {
+            std::cout << "Goal in Border: setting Current State to Goal State" << std::endl;
+
+            best.peg1 = border[0].peg1;
+            best.peg2 = border[0].peg2;
+            best.peg3 = border[0].peg3;
+
+            best.f = border[0].f;
+            best.g = border[0].g;
+            best.h = border[0].h;
+
+            best.goal = border[i].goal;
+            return best;
+        }
+
+        if(border[i].h < best.h)
+        {
+            std::cout << "Best State Found" << std::endl;
+            best.peg1 = border[0].peg1;
+            best.peg2 = border[0].peg2;
+            best.peg3 = border[0].peg3;
+
+            best.f = border[i].f;
+            best.g = border[i].g;
+            best.h = border[i].h;
+
+            best.goal = border[i].goal;
+        }
+    }
+
+    return best;
 }
