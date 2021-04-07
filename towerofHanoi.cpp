@@ -171,6 +171,80 @@ void generate(State& currentState)
     addToBorder.goal = false;
 
     // if-then-rules to generate new safe states from current state
+    if(currentState.peg1 == "TMB" && currentState.peg2 == "0" && currentState.peg3 == "0")
+    {
+        currentState.g = 0;
+        currentState.h = hValue("TMB", "0", "0");
+        currentState.f  = currentState.h + currentState.g;
+        
+        // setting the border state with the expected next values
+        addToBorder.peg1 = "MB";
+        addToBorder.peg2 = "T";
+        addToBorder.peg3 = "0";
+        addToBorder.g = 1;
+
+        // T M B Cost
+        addToBorder.h = hValue("MB", "T", "0");
+        addToBorder.f = addToBorder.g + addToBorder.h;
+
+        // checking if the node is already in the frontier
+        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
+        {
+            border.push_back(addToBorder);
+        }
+        // remove the state from the log
+        findAndRemove("TMB", "0", "0");
+        return;
+    }
+    else if(currentState.peg1 == "MB" && currentState.peg2 == "0" && currentState.peg3 == "T")
+    {
+        currentState.g = 1;
+        currentState.h = hValue("MB", "0", "T");
+        currentState.f = currentState.g + currentState.h;
+
+        // setting the border state with the expected next values 
+        addToBorder.peg1 = "B";
+        addToBorder.peg2 = "M";
+        addToBorder.peg3 = "T";
+        addToBorder.g = 2;
+
+       // T M B Cost
+       addToBorder.h = hValue("B", "M", "T");
+       addToBorder.f = addToBorder.g + addToBorder.h;
+
+        // checking if the node is already in the frontier
+        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
+        {
+            border.push_back(addToBorder);
+        }
+        // remove the state from the log
+        findAndRemove("MB", "0", "T");
+        return;
+    }
+    else if(currentState.peg1 == "B" && currentState.peg2 == "M" && currentState.peg3 == "T")
+    {
+        currentState.g = 2;
+        currentState.h = hValue("B", "M", "T");
+        currentState.f = 6; // Why?
+
+        addToBorder.peg1 = "B";
+        addToBorder.peg2 = "TM";
+        addToBorder.peg3 = "0";
+        addToBorder.g = 3;
+
+        // T M B Cost
+        addToBorder.h = hValue("B", "TM", "0");
+        addToBorder.f = addToBorder.g + addToBorder.h;
+         // checking if the node is already in the frontier
+        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
+        {
+            border.push_back(addToBorder);
+        }
+        // remove the state from the log
+        findAndRemove("B", "M", "T");
+        return;
+    }
+    
     
 }
 
