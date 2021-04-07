@@ -146,6 +146,34 @@ void findAndRemove(std::string p1, std::string p2, std::string p3)
     }
 }
 
+void generate(State& currentState)
+{
+    findAndRemove(currentState.peg1, currentState.peg2, currentState.peg3);
+      //   if it is already in the border, display "Regenerated"
+  //      and then display "Updated f" if f is better
+  //          and also replace the old version in the border.
+  // Otherwise, add the state to the end of border
+    for(int i = 0; i < border.size(); i++)
+    {
+        if(border[i].peg1 == currentState.peg1 && border[i].peg2 == currentState.peg2 && border[i].peg3 == currentState.peg3)
+            {
+                std::cout << "Regenerated State" << std::endl;
+                if(border[i].f < currentState.f)
+                {
+                    std::cout << "Update f value" << std::endl;
+                    currentState.f = border[i].f;
+                    return;
+                }  
+            }
+    }
+
+    State addToBorder;
+    addToBorder.goal = false;
+
+    // if-then-rules to generate new safe states from current state
+    
+}
+
 // function to find the best state in the border state
 State bestofBorder(State best)
 {
@@ -196,4 +224,29 @@ State bestofBorder(State best)
     }
 
     return best;
+}
+
+int main()
+{
+    int i = 0;
+    
+    // T and B is not on center nor end
+    State current = {"TMB", "0", "0", 0, hValue("TMB", "0", "0"), 3, false};
+
+    do
+    {
+        if(current.goal)
+        {
+            std::cout << "Goal State Reached" << std::endl;
+            break;
+        }
+
+        std::cout << ">>>Expand:" << current.peg1 << " " << current.peg2 << " " << current.peg3 << std::endl;
+        generate(current);
+        std::cout << "Border is:" << std::endl;
+        displayBorder();
+        current = bestofBorder(current);
+        i++;
+    }while (!current.goal); // end while 
+    return 0;
 }
