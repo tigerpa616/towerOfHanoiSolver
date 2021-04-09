@@ -244,7 +244,161 @@ void generate(State& currentState)
         findAndRemove("B", "M", "T");
         return;
     }
-    
+    else if(currentState.peg1 == "B" && currentState.peg2 == "TM" && currentState.peg3 == "0")
+    {
+        currentState.g = 3;
+        currentState.h = hValue("B", "TM", "0");
+        currentState.f = currentState.g + currentState.f;
+
+        addToBorder.peg1 = "0";
+        addToBorder.peg2 = "TM";
+        addToBorder.peg3 = "B";
+        addToBorder.g = 4;
+
+        // T M B Cost
+        addToBorder.h = hValue("0", "TM", "B");
+        addToBorder.f = addToBorder.g + addToBorder.h;
+        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
+        {
+            border.push_back(addToBorder);
+        }
+        findAndRemove("B", "TM", "0");
+        return;
+    }
+    else if(currentState.peg1 == "0" && currentState.peg2 == "TM" && currentState.peg3 == "B")
+    {
+        currentState.g = 4;
+        currentState.h = hValue("0", "TM", "B");
+        currentState.f = currentState.g + currentState.f;
+
+        addToBorder.peg1 = "T";
+        addToBorder.peg2 = "M";
+        addToBorder.peg3 = "B";
+        addToBorder.g = 5;
+
+        // T M B Cost
+        addToBorder.h = hValue("T", "M", "B");
+        addToBorder.f = addToBorder.g + addToBorder.h;
+        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
+        {
+            border.push_back(addToBorder);
+        }
+        findAndRemove("0", "TM", "B");
+        return;
+    }
+    else if(currentState.peg1 == "T" && currentState.peg2 == "M" && currentState.peg3 == "B")
+    {
+        currentState.g = 5;
+        currentState.h = hValue("t", "M", "B");
+        currentState.f = currentState.g + currentState.f;
+
+        addToBorder.peg1 = "T";
+        addToBorder.peg2 = "0";
+        addToBorder.peg3 = "MB";
+        addToBorder.g = 6;
+
+        // T M B Cost
+        addToBorder.h = hValue("T", "0", "MB");
+        addToBorder.f = addToBorder.g + addToBorder.h;
+        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
+        {
+            border.push_back(addToBorder);
+        }
+        findAndRemove("T", "M", "B");
+        return;
+    }
+    else if(currentState.peg1 == "T" && currentState.peg2 == "0" && currentState.peg3 == "MB")
+    {
+        currentState.g = 6;
+        currentState.h = hValue("T", "0", "MB");
+        currentState.f = currentState.g + currentState.f;
+
+        addToBorder.peg1 = "0";
+        addToBorder.peg2 = "0";
+        addToBorder.peg3 = "TMB";
+        addToBorder.g = 7;
+
+        // T M B Cost
+        addToBorder.h = hValue("0", "0", "TMB");
+        addToBorder.f = addToBorder.g + addToBorder.h;
+        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
+        {
+            border.push_back(addToBorder);
+        }
+        findAndRemove("T", "0", "MB");
+        return;
+    }
+    else if(currentState.peg1 == "0" && currentState.peg2 == "0" && currentState.peg3 == "TMB")
+    {
+        currentState.g = 7;
+        currentState.h = hValue("0", "0", "TMB");
+        currentState.f = currentState.g + currentState.h;
+        findAndRemove("0", "0", "TMB");
+        return;
+    }
+    else if(currentState.peg1 == "0" && currentState.peg2 == "M" && currentState.peg3 == "TB")
+    {
+        currentState.g = 6;
+        currentState.h = hValue("0", "M", "TB");
+        currentState.f = currentState.g + currentState.f;
+
+        addToBorder.peg1 = "M";
+        addToBorder.peg2 = "0";
+        addToBorder.peg3 = "TB";
+        addToBorder.g = 7;
+
+        // T M B Cost
+        addToBorder.h = hValue("M", "0", "TB");
+        addToBorder.f = addToBorder.g + addToBorder.h;
+        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
+        {
+            border.push_back(addToBorder);
+        }
+        findAndRemove("0", "M", "TB");
+        return;
+    }
+    else if(currentState.peg1 == "M" && currentState.peg2 == "0" && currentState.peg3 == "TB")
+    {
+        currentState.g = 7;
+        currentState.h = hValue("M", "0", "TB");
+        currentState.f = currentState.g + currentState.f;
+
+        addToBorder.peg1 = "M";
+        addToBorder.peg2 = "0";
+        addToBorder.peg3 = "TB";
+        addToBorder.g = 8;
+
+        // T M B Cost
+        addToBorder.h = hValue("M", "0", "TB");
+        addToBorder.f = addToBorder.g + addToBorder.h;
+        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
+        {
+            border.push_back(addToBorder);
+        }
+        findAndRemove("M", "0", "TB");
+        return;
+    }
+    else if(currentState.peg1 == "MB" && currentState.peg2 == "T" && currentState.peg3 == "0")
+    {
+        currentState.g = 1;
+        currentState.h = hValue("MB", "T", "0");
+        currentState.f = currentState.g + currentState.f;
+
+        addToBorder.peg1 = "B";
+        addToBorder.peg2 = "T";
+        addToBorder.peg3 = "M";
+        addToBorder.g = 8;
+
+        // T M B Cost
+        addToBorder.h = hValue("M", "0", "TB");
+        addToBorder.f = addToBorder.g + addToBorder.h;
+        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
+        {
+            border.push_back(addToBorder);
+        }
+        findAndRemove("M", "0", "TB");
+        return;
+    }
     
 }
 
