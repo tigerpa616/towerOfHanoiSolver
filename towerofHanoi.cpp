@@ -146,258 +146,234 @@ void findAndRemove(std::string p1, std::string p2, std::string p3)
     }
 }
 
-void generate(State& currentState)
+void generate(State& current)
 {
-    findAndRemove(currentState.peg1, currentState.peg2, currentState.peg3);
-      //   if it is already in the border, display "Regenerated"
+   findAndRemove(current.peg1, current.peg2, current.peg3);
+  //   if it is already in the frointer, display "Regenerated"
   //      and then display "Updated f" if f is better
-  //          and also replace the old version in the border.
-  // Otherwise, add the state to the end of border
-    for(int i = 0; i < border.size(); i++)
-    {
-        if(border[i].peg1 == currentState.peg1 && border[i].peg2 == currentState.peg2 && border[i].peg3 == currentState.peg3)
-            {
-                std::cout << "Regenerated State" << std::endl;
-                if(border[i].f < currentState.f)
-                {
-                    std::cout << "Update f value" << std::endl;
-                    currentState.f = border[i].f;
-                    return;
-                }  
-            }
-    }
-
-    State addToBorder;
-    addToBorder.goal = false;
-
-    // if-then-rules to generate new safe states from current state
-    if(currentState.peg1 == "TMB" && currentState.peg2 == "0" && currentState.peg3 == "0")
-    {
-        currentState.g = 0;
-        currentState.h = hValue("TMB", "0", "0");
-        currentState.f  = currentState.h + currentState.g;
-        
-        // setting the border state with the expected next values
-        addToBorder.peg1 = "MB";
-        addToBorder.peg2 = "T";
-        addToBorder.peg3 = "0";
-        addToBorder.g = 1;
-
-        // T M B Cost
-        addToBorder.h = hValue("MB", "T", "0");
-        addToBorder.f = addToBorder.g + addToBorder.h;
-
-        // checking if the node is already in the frontier
-        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
-        {
-            border.push_back(addToBorder);
-        }
-        // remove the state from the log
-        findAndRemove("TMB", "0", "0");
+  //          and also replace the old version in the frontier.
+  // Otherwise, add the state to the end of frontier
+  for(int i = 0; i < border.size(); i++) {
+    if(frontier[i].peg1 == current.peg1 && frontier[i].peg2 == current.peg2 && frontier[i].peg3 == current.peg3) {
+      cout << "Regenerated State" << endl;
+      if(frontier[i].f < current.f) {
+        cout << "Updated f" << endl;
+        current.f = frontier[i].f;
         return;
+      }
     }
-    else if(currentState.peg1 == "MB" && currentState.peg2 == "0" && currentState.peg3 == "T")
-    {
-        currentState.g = 1;
-        currentState.h = hValue("MB", "0", "T");
-        currentState.f = currentState.g + currentState.h;
-
-        // setting the border state with the expected next values 
-        addToBorder.peg1 = "B";
-        addToBorder.peg2 = "M";
-        addToBorder.peg3 = "T";
-        addToBorder.g = 2;
-
-       // T M B Cost
-       addToBorder.h = hValue("B", "M", "T");
-       addToBorder.f = addToBorder.g + addToBorder.h;
-
-        // checking if the node is already in the frontier
-        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
-        {
-            border.push_back(addToBorder);
-        }
-        // remove the state from the log
-        findAndRemove("MB", "0", "T");
-        return;
+  }
+  State addToFrontier;
+  addToFrontier.goal = false;
+  // if-then-rules to generate new safe states from current
+  if(current.peg1 == "TMB" && current.peg2 == "0" && current.peg3 == "0") {
+    current.g = 0;
+    current.h = hValue("TMB", "0", "0");
+    current.f = current.h + current.g;
+    addToFrontier.peg1 = "MB";
+    addToFrontier.peg2 = "T";
+    addToFrontier.peg3 = "0";
+    addToFrontier.g = 1;
+                    // T   M   B Cost
+    addToFrontier.h = hValue("MB", "T", "0");
+    addToFrontier.f = addToFrontier.g + addToFrontier.h;
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+      frontier.push_back(addToFrontier);
     }
-    else if(currentState.peg1 == "B" && currentState.peg2 == "M" && currentState.peg3 == "T")
-    {
-        currentState.g = 2;
-        currentState.h = hValue("B", "M", "T");
-        currentState.f = 6; // Why?
-
-        addToBorder.peg1 = "B";
-        addToBorder.peg2 = "TM";
-        addToBorder.peg3 = "0";
-        addToBorder.g = 3;
-
-        // T M B Cost
-        addToBorder.h = hValue("B", "TM", "0");
-        addToBorder.f = addToBorder.g + addToBorder.h;
-         // checking if the node is already in the frontier
-        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
-        {
-            border.push_back(addToBorder);
-        }
-        // remove the state from the log
-        findAndRemove("B", "M", "T");
-        return;
+    addToFrontier.peg1 = "MB";
+    addToFrontier.peg2 = "0";
+    addToFrontier.peg3 = "T";
+    addToFrontier.g = 1;
+                    // T   M   B Cost
+    addToFrontier.h = hValue("MB", "0", "T");
+    addToFrontier.f = addToFrontier.g + addToFrontier.h;
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+      frontier.push_back(addToFrontier);
     }
-    else if(currentState.peg1 == "B" && currentState.peg2 == "TM" && currentState.peg3 == "0")
-    {
-        currentState.g = 3;
-        currentState.h = hValue("B", "TM", "0");
-        currentState.f = currentState.g + currentState.f;
-
-        addToBorder.peg1 = "0";
-        addToBorder.peg2 = "TM";
-        addToBorder.peg3 = "B";
-        addToBorder.g = 4;
-
-        // T M B Cost
-        addToBorder.h = hValue("0", "TM", "B");
-        addToBorder.f = addToBorder.g + addToBorder.h;
-        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
-        {
-            border.push_back(addToBorder);
-        }
-        findAndRemove("B", "TM", "0");
-        return;
+    findNRemove("TMB", "0", "0");
+    return;
+  }
+  else if(current.peg1 == "MB" && current.peg2 == "0" && current.peg3 == "T") {
+    current.g = 1;
+    current.h = hValue("MB", "0", "T");
+    current.f = current.g + current.h;
+    addToFrontier.peg1 = "B";
+    addToFrontier.peg2 = "M";
+    addToFrontier.peg3 = "T";
+    addToFrontier.g = 2;
+                    // T   M   B Cost
+    addToFrontier.h = hValue("B", "M", "T");
+    addToFrontier.f = addToFrontier.g + addToFrontier.h;
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+      frontier.push_back(addToFrontier);
     }
-    else if(currentState.peg1 == "0" && currentState.peg2 == "TM" && currentState.peg3 == "B")
-    {
-        currentState.g = 4;
-        currentState.h = hValue("0", "TM", "B");
-        currentState.f = currentState.g + currentState.f;
-
-        addToBorder.peg1 = "T";
-        addToBorder.peg2 = "M";
-        addToBorder.peg3 = "B";
-        addToBorder.g = 5;
-
-        // T M B Cost
-        addToBorder.h = hValue("T", "M", "B");
-        addToBorder.f = addToBorder.g + addToBorder.h;
-        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
-        {
-            border.push_back(addToBorder);
-        }
-        findAndRemove("0", "TM", "B");
-        return;
+    findNRemove("MB", "0", "T");
+    return;
+  }
+  else if(current.peg1 == "B" && current.peg2 == "M" && current.peg3 == "T") {
+    current.g = 2;
+    current.h = hValue("B", "M", "T");
+    current.f = 6;
+    addToFrontier.peg1 = "B";
+    addToFrontier.peg2 = "TM";
+    addToFrontier.peg3 = "0";
+    addToFrontier.g = 3;
+                    // T   M   B Cost
+    addToFrontier.h = hValue("B", "TM", "0");
+    addToFrontier.f = addToFrontier.g + addToFrontier.h;
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+      frontier.push_back(addToFrontier);
     }
-    else if(currentState.peg1 == "T" && currentState.peg2 == "M" && currentState.peg3 == "B")
-    {
-        currentState.g = 5;
-        currentState.h = hValue("t", "M", "B");
-        currentState.f = currentState.g + currentState.f;
-
-        addToBorder.peg1 = "T";
-        addToBorder.peg2 = "0";
-        addToBorder.peg3 = "MB";
-        addToBorder.g = 6;
-
-        // T M B Cost
-        addToBorder.h = hValue("T", "0", "MB");
-        addToBorder.f = addToBorder.g + addToBorder.h;
-        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
-        {
-            border.push_back(addToBorder);
-        }
-        findAndRemove("T", "M", "B");
-        return;
+    findNRemove("B", "M", "T");
+    return;
+  }
+  else if(current.peg1 == "B" && current.peg2 == "TM" && current.peg3 == "0") {
+    current.g = 3;
+    current.h = hValue("B", "TM", "0");
+    current.f = current.g + current.f;
+    addToFrontier.peg1 = "0";
+    addToFrontier.peg2 = "TM";
+    addToFrontier.peg3 = "B";
+    addToFrontier.g = 4;
+                    // T   M   B Cost
+    addToFrontier.h = hValue("0", "TM", "B");
+    addToFrontier.f = addToFrontier.g + addToFrontier.h;
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+      frontier.push_back(addToFrontier);
     }
-    else if(currentState.peg1 == "T" && currentState.peg2 == "0" && currentState.peg3 == "MB")
-    {
-        currentState.g = 6;
-        currentState.h = hValue("T", "0", "MB");
-        currentState.f = currentState.g + currentState.f;
-
-        addToBorder.peg1 = "0";
-        addToBorder.peg2 = "0";
-        addToBorder.peg3 = "TMB";
-        addToBorder.g = 7;
-
-        // T M B Cost
-        addToBorder.h = hValue("0", "0", "TMB");
-        addToBorder.f = addToBorder.g + addToBorder.h;
-        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
-        {
-            border.push_back(addToBorder);
-        }
-        findAndRemove("T", "0", "MB");
-        return;
+    addToFrontier.peg1 = "TB";
+    addToFrontier.peg2 = "M";
+    addToFrontier.peg3 = "0";
+    addToFrontier.g = 4;
+                    // T   M   B Cost
+    addToFrontier.h = hValue("TB", "M", "0");
+    addToFrontier.f = addToFrontier.g + addToFrontier.h;
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+      frontier.push_back(addToFrontier);
     }
-    else if(currentState.peg1 == "0" && currentState.peg2 == "0" && currentState.peg3 == "TMB")
-    {
-        currentState.g = 7;
-        currentState.h = hValue("0", "0", "TMB");
-        currentState.f = currentState.g + currentState.h;
-        findAndRemove("0", "0", "TMB");
-        return;
+    findNRemove("B", "TM", "0");
+    return;
+  }
+  else if(current.peg1 == "0" && current.peg2 == "TM" && current.peg3 == "B") {
+    current.g = 4;
+    current.h = hValue("0", "TM", "B");
+    current.f = current.g + current.h;
+    addToFrontier.peg1 = "T";
+    addToFrontier.peg2 = "M";
+    addToFrontier.peg3 = "B";
+    addToFrontier.g = 5;
+                    // T   M   B Cost
+    addToFrontier.h = hValue("T", "M", "B");
+    addToFrontier.f = addToFrontier.g + addToFrontier.h;
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+      frontier.push_back(addToFrontier);
     }
-    else if(currentState.peg1 == "0" && currentState.peg2 == "M" && currentState.peg3 == "TB")
-    {
-        currentState.g = 6;
-        currentState.h = hValue("0", "M", "TB");
-        currentState.f = currentState.g + currentState.f;
-
-        addToBorder.peg1 = "M";
-        addToBorder.peg2 = "0";
-        addToBorder.peg3 = "TB";
-        addToBorder.g = 7;
-
-        // T M B Cost
-        addToBorder.h = hValue("M", "0", "TB");
-        addToBorder.f = addToBorder.g + addToBorder.h;
-        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
-        {
-            border.push_back(addToBorder);
-        }
-        findAndRemove("0", "M", "TB");
-        return;
+    addToFrontier.peg1 = "0";
+    addToFrontier.peg2 = "M";
+    addToFrontier.peg3 = "TB";
+    addToFrontier.g = 5;
+                    // T   M   B Cost
+    addToFrontier.h = hValue("0", "M", "TB");
+    addToFrontier.f = addToFrontier.g + addToFrontier.h;
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+      frontier.push_back(addToFrontier);
     }
-    else if(currentState.peg1 == "M" && currentState.peg2 == "0" && currentState.peg3 == "TB")
-    {
-        currentState.g = 7;
-        currentState.h = hValue("M", "0", "TB");
-        currentState.f = currentState.g + currentState.f;
-
-        addToBorder.peg1 = "M";
-        addToBorder.peg2 = "0";
-        addToBorder.peg3 = "TB";
-        addToBorder.g = 8;
-
-        // T M B Cost
-        addToBorder.h = hValue("M", "0", "TB");
-        addToBorder.f = addToBorder.g + addToBorder.h;
-        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
-        {
-            border.push_back(addToBorder);
-        }
-        findAndRemove("M", "0", "TB");
-        return;
+    findNRemove("0", "TM", "B");
+    return;
+  }
+  else if(current.peg1 == "T" && current.peg2 == "M" && current.peg3 == "B") {
+    current.g = 5;
+    current.h = hValue("T", "M", "B");
+    current.f = current.h + current.g;
+    addToFrontier.peg1 = "T";
+    addToFrontier.peg2 = "0";
+    addToFrontier.peg3 = "MB";
+    addToFrontier.g = 6;
+                    // T   M   B Cost
+    addToFrontier.h = hValue("T", "0", "MB");
+    addToFrontier.f = addToFrontier.g + addToFrontier.h;
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+      frontier.push_back(addToFrontier);
     }
-    else if(currentState.peg1 == "MB" && currentState.peg2 == "T" && currentState.peg3 == "0")
-    {
-        currentState.g = 1;
-        currentState.h = hValue("MB", "T", "0");
-        currentState.f = currentState.g + currentState.f;
-
-        addToBorder.peg1 = "B";
-        addToBorder.peg2 = "T";
-        addToBorder.peg3 = "M";
-        addToBorder.g = 8;
-
-        // T M B Cost
-        addToBorder.h = hValue("M", "0", "TB");
-        addToBorder.f = addToBorder.g + addToBorder.h;
-        if(!inBorder(addToBorder.peg1, addToBorder.peg2, addToBorder.peg3))
-        {
-            border.push_back(addToBorder);
-        }
-        findAndRemove("M", "0", "TB");
-        return;
+    findNRemove("T", "M", "B");
+    return;
+  }
+  else if(current.peg1 == "T" && current.peg2 == "0" && current.peg3 == "MB") {
+    current.g = 6;
+    current.h = hValue("T", "0", "MB");
+    current.f = current.h + current.g;
+    addToFrontier.peg1 = "0";
+    addToFrontier.peg2 = "0";
+    addToFrontier.peg3 = "TMB";
+    addToFrontier.goal = true;
+    addToFrontier.g = 7;
+                    // T   M   B Cost
+    addToFrontier.h = hValue("0", "0", "TMB");
+    addToFrontier.f = addToFrontier.g + addToFrontier.h;
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+      frontier.push_back(addToFrontier);
+    }
+    findNRemove("T", "0", "MB");
+    return;
+  }
+  else if(current.peg1 == "0" && current.peg2 == "0" && current.peg3 == "TMB") {
+    current.g = 7;
+    current.h = hValue("0", "0", "TMB");
+    current.f = current.h + current.g;
+    findNRemove("0", "0", "TMB");
+    return;
+  }
+  // ----------------------------------------------------------------------------------------
+  else if(current.peg1 == "0" && current.peg2 == "M" && current.peg3 == "TB") {
+    current.g = 6;
+    current.h = hValue("0", "M", "TB");
+    current.f = current.g + current.h;
+    addToFrontier.peg1 = "M";
+    addToFrontier.peg2 = "0";
+    addToFrontier.peg3 = "TB";
+    addToFrontier.g = 7;
+                    // T   M   B Cost
+    addToFrontier.h = hValue("M", "0", "TB");
+    addToFrontier.f = addToFrontier.g + addToFrontier.h;
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+      frontier.push_back(addToFrontier);
+    }
+    findNRemove("0", "M", "TB");
+    return;
+  }
+  else if(current.peg1 == "M" && current.peg2 == "0" && current.peg3 == "TB") {
+    current.g = 7;
+    current.h = hValue("M", "0", "TB");
+    current.f = current.g + current.h;
+    addToFrontier.peg1 = "M";
+    addToFrontier.peg2 = "0";
+    addToFrontier.peg3 = "TB";
+    addToFrontier.g = 8;
+                    // T   M   B Cost
+    addToFrontier.h = hValue("M", "0", "TB");
+    addToFrontier.f = addToFrontier.g + addToFrontier.h;
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+      frontier.push_back(addToFrontier);
+    }
+    findNRemove("M", "0", "TB");
+    return;
+  }
+  else if(current.peg1 == "MB" && current.peg2 == "T" && current.peg3 == "0") {
+    current.g = 1;
+    current.h = hValue("MB", "T", "0");
+    current.f = current.g + current.h;
+    addToFrontier.peg1 = "B";
+    addToFrontier.peg2 = "T";
+    addToFrontier.peg3 = "M";
+    addToFrontier.g = 8;
+                    // T   M   B Cost
+    addToFrontier.h = hValue("M", "0", "TB");
+    addToFrontier.f = addToFrontier.g + addToFrontier.h;
+    if(!inFrontier(addToFrontier.peg1, addToFrontier.peg2, addToFrontier.peg3)) {
+      frontier.push_back(addToFrontier);
+    }
+    findNRemove("M", "0", "TB");
+    return;
     }
     
 }
@@ -406,52 +382,39 @@ void generate(State& currentState)
 State bestofBorder(State best)
 {
     //if the border is not empty; by default the current state should be the best
-    if(border.size())
-    {
-        best.peg1 = border[0].peg1;
-        best.peg2 = border[0].peg2;
-        best.peg3 = border[0].peg3;
-
-        best.f = border[0].f;
-        best.g = border[0].g;
-        best.h = border[0].h;
-    }
-
+    if(border.size()) {
+    best.peg1 = border[0].peg1;
+    best.peg2 = border[0].peg2;
+    best.peg3 = border[0].peg3;
+    best.f = border[0].f;
+    best.g = border[0].g;
+    best.h = border[0].h;
+  }
     //find the best f state in the border, remove it, and return it
-    for(int i = 0; i < border.size(); i++)
-    {
-        if(border[i].goal)
-        {
-            std::cout << "Goal in Border: setting Current State to Goal State" << std::endl;
-
-            best.peg1 = border[0].peg1;
-            best.peg2 = border[0].peg2;
-            best.peg3 = border[0].peg3;
-
-            best.f = border[0].f;
-            best.g = border[0].g;
-            best.h = border[0].h;
-
-            best.goal = border[i].goal;
-            return best;
-        }
-
-        if(border[i].h < best.h)
-        {
-            std::cout << "Best State Found" << std::endl;
-            best.peg1 = border[0].peg1;
-            best.peg2 = border[0].peg2;
-            best.peg3 = border[0].peg3;
-
-            best.f = border[i].f;
-            best.g = border[i].g;
-            best.h = border[i].h;
-
-            best.goal = border[i].goal;
-        }
+    for(int i = 0; i < border.size(); i++) {
+    if(border[i].goal) {
+      std::cout << "[Goal In Frontier]: Setting Current State To Goal!" << std::endl;
+      best.peg1 = border[0].peg1;
+      best.peg2 = border[0].peg2;
+      best.peg3 = border[0].peg3;
+      best.f = border[i].f;
+      best.g = border[i].g;
+      best.h = border[i].h;
+      best.goal = border[i].goal;
+      return best;
     }
-
-    return best;
+    if(border[i].h < best.h) {
+      std::cout << "Found Best" << std::endl;
+      best.peg1 = border[0].peg1;
+      best.peg2 = border[0].peg2;
+      best.peg3 = border[0].peg3;
+      best.f = border[i].f;
+      best.g = border[i].g;
+      best.h = border[i].h;
+      best.goal = border[i].goal;
+    }
+  }
+  return best;
 }
 
 int main()
@@ -459,23 +422,18 @@ int main()
     int i = 0;
     
     // T and B is not on center nor end
-    State current = {"TMB", "0", "0", 0, hValue("TMB", "0", "0"), 3, false};
-
-    // do
-    // {
-    //     if(current.goal)
-    //     {
-    //         std::cout << "Goal State Reached" << std::endl;
-    //         break;
-    //     }
-
-    //     std::cout << ">>>Expand:" << current.peg1 << " " << current.peg2 << " " << current.peg3 << std::endl;
-    //     generate(current);
-    //     std::cout << "Border is:" << i << std::endl;
-    //     displayBorder();       
-    //     current = bestofBorder(current);
-    //     i++;
-    // }
-    // while (!current.goal); // end while 
-    return 0;
+    State current = {"TMB", "0", "0", 0, hValue("TMB", "0", "0"), 3, false}; //T and B is not on center nor end.
+  do {
+      if(current.goal) {
+        std::cout << "Goal Reached!" << std::endl;
+        break;
+      }
+      std::cout << ">>>Expand:" << current.peg1 << " " << current.peg2 << " " << current.peg3 << std::endl;
+      generate(current);
+      std::cout << "Frontier is:" << std::endl;
+      displayBorder();
+      current = bestofBorder(current);
+      i++;
+    }while (!current.goal);// end while
+  return 0;
 }
