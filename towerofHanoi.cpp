@@ -1,6 +1,6 @@
-#include <iostream>
 #include <vector>
 #include <string>
+#include <iostream>
 
 struct State {
   std::string peg1;
@@ -461,20 +461,21 @@ int main()
     // T and B is not on center nor end
     State current = {"TMB", "0", "0", 0, hValue("TMB", "0", "0"), 3, false};
 
-    do
-    {
-        if(current.goal)
-        {
-            std::cout << "Goal State Reached" << std::endl;
-            break;
-        }
+    // do
+    // {
+    //     if(current.goal)
+    //     {
+    //         std::cout << "Goal State Reached" << std::endl;
+    //         break;
+    //     }
 
-        std::cout << ">>>Expand:" << current.peg1 << " " << current.peg2 << " " << current.peg3 << std::endl;
-        generate(current);
-        std::cout << "Border is:" << std::endl;
-        displayBorder();
-        current = bestofBorder(current);
-        i++;
-    }while (!current.goal); // end while 
+    //     std::cout << ">>>Expand:" << current.peg1 << " " << current.peg2 << " " << current.peg3 << std::endl;
+    //     generate(current);
+    //     std::cout << "Border is:" << i << std::endl;
+    //     displayBorder();       
+    //     current = bestofBorder(current);
+    //     i++;
+    // }
+    // while (!current.goal); // end while 
     return 0;
 }
